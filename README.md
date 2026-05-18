@@ -12,6 +12,17 @@ O sistema foi criado com o objetivo de simplificar o processo de marcação de c
 
 A aplicação realiza validações automáticas para evitar conflitos de horários e garantir uma melhor organização dos atendimentos.
 
+A proposta do sistema é ser leve, intuitiva e eficiente, sendo ideal para clínicas e consultórios com poucos profissionais.
+
+---
+
+# 👥 Perfis de Usuário
+
+| Perfil | Descrição |
+|---|---|
+| **Profissional** | Define horários disponíveis, gerencia sua agenda e visualiza consultas agendadas |
+| **Paciente** | Consulta horários livres e realiza agendamentos de consultas |
+
 ---
 
 # 🚀 Funcionalidades
@@ -50,3 +61,189 @@ O sistema possui como entidade central o **Agendamento**, responsável por conec
 
 ```text
 Paciente + Profissional + Horário = Consulta Agendada
+```
+
+Antes da confirmação de uma consulta, o sistema verifica automaticamente:
+
+- ✅ Disponibilidade do horário
+- ✅ Conflitos de agenda
+- ✅ Existência do profissional
+- ✅ Existência do paciente
+
+---
+
+# 🗂️ Estrutura das Entidades
+
+## Profissional
+
+```text
+id
+nome
+especialidade
+```
+
+## Paciente
+
+```text
+id
+nome
+```
+
+## Slot de Agenda
+
+Representa os horários disponíveis para atendimento.
+
+```text
+id
+profissional_id
+data_hora
+disponivel
+```
+
+## Agendamento
+
+```text
+id
+paciente_id
+profissional_id
+slot_id
+status
+```
+
+---
+
+# 🔄 Relação Entre as Entidades
+
+```text
+Profissional
+   └── possui → Slots de Agenda
+
+Paciente
+   └── realiza → Agendamentos
+
+Agendamento
+   └── conecta → Paciente + Profissional + Slot
+```
+
+---
+
+# 🛠️ Tecnologias Utilizadas
+
+> Atualize conforme a stack utilizada no projeto.
+
+## Front-end
+
+- HTML
+- CSS
+- JavaScript
+
+## Back-end
+
+- Node.js
+
+## Banco de Dados
+
+- MySQL
+
+## Ferramentas
+
+- Git
+- GitHub
+
+---
+
+# 📂 Estrutura do Projeto
+
+```bash
+📦 agendamento-consultorio
+ ┣ 📂 src
+ ┣ 📂 public
+ ┣ 📂 components
+ ┣ 📂 routes
+ ┣ 📂 database
+ ┣ 📜 package.json
+ ┗ 📜 README.md
+```
+
+---
+
+# 🚀 Como Executar o Projeto
+
+## Clone o repositório
+
+```bash
+git clone https://github.com/seu-usuario/agendamento-consultorio.git
+```
+
+## Acesse a pasta do projeto
+
+```bash
+cd agendamento-consultorio
+```
+
+## Instale as dependências
+
+```bash
+npm install
+```
+
+## Configure as variáveis de ambiente
+
+```bash
+cp .env.example .env
+```
+
+## Execute o projeto
+
+```bash
+npm run dev
+```
+
+---
+
+# 📸 Preview do Sistema
+
+> Adicione aqui imagens ou GIFs da aplicação.
+
+```md
+![Preview do Sistema](./preview.png)
+```
+
+---
+
+# 🎯 Objetivo Acadêmico
+
+Este projeto foi desenvolvido para fins de estudo e prática de desenvolvimento de software, aplicando conceitos de:
+
+- CRUD
+- Relacionamento entre entidades
+- Regras de negócio
+- Organização de agendas
+- Validações de sistema
+- Desenvolvimento full stack
+
+---
+
+# 📈 Melhorias Futuras
+
+- Sistema de login e autenticação
+- Dashboard administrativo
+- Histórico de consultas
+- Notificações por e-mail
+- Integração com WhatsApp
+- Responsividade mobile
+- Painel do administrador
+
+---
+
+# 🤝 Contribuição
+
+Contribuições são bem-vindas.
+
+Sinta-se à vontade para abrir issues, sugerir melhorias ou enviar pull requests.
+
+---
+
+# 📄 Licença
+
+Este projeto está sob a licença MIT. Consulte o arquivo `LICENSE` para mais informações.
