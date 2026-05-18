@@ -10,6 +10,8 @@ Projeto desenvolvido por **Patryck Rangel** e **Caio Cardoso**.
 
 O sistema foi criado com o objetivo de simplificar o processo de marcação de consultas, permitindo que profissionais organizem suas agendas e que pacientes reservem horários disponíveis com segurança e praticidade.
 
+Além disso, o sistema também oferece funcionalidades para operadores e administradores, permitindo melhor controle da clínica, organização dos atendimentos e gerenciamento das informações do sistema.
+
 A aplicação realiza validações automáticas para evitar conflitos de horários e garantir uma melhor organização dos atendimentos.
 
 A proposta do sistema é ser leve, intuitiva e eficiente, sendo ideal para clínicas e consultórios com poucos profissionais.
@@ -20,6 +22,8 @@ A proposta do sistema é ser leve, intuitiva e eficiente, sendo ideal para clín
 
 | Perfil | Descrição |
 |---|---|
+| **Administrador** | Responsável pelo gerenciamento geral do sistema, controle de usuários e administração da clínica |
+| **Operador** | Atua como intermediador entre pacientes e profissionais, realizando agendamentos e organizando atendimentos |
 | **Profissional** | Define horários disponíveis, gerencia sua agenda e visualiza consultas agendadas |
 | **Paciente** | Consulta horários livres e realiza agendamentos de consultas |
 
@@ -27,9 +31,24 @@ A proposta do sistema é ser leve, intuitiva e eficiente, sendo ideal para clín
 
 # 🚀 Funcionalidades
 
+## 👨‍💼 Área do Administrador
+
+- Gerenciamento geral do sistema
+- Controle de usuários
+- Cadastro e gerenciamento de profissionais
+- Visualização de relatórios e atendimentos
+- Controle administrativo da clínica
+
+## 🧑‍💻 Área do Operador
+
+- Cadastro de pacientes
+- Realização de agendamentos
+- Organização da agenda dos profissionais
+- Cancelamento e remarcação de consultas
+- Atendimento e suporte aos pacientes
+
 ## 👨‍⚕️ Área do Profissional
 
-- Cadastro de profissionais
 - Cadastro de especialidades
 - Definição de horários disponíveis
 - Gerenciamento da agenda
@@ -51,6 +70,8 @@ A proposta do sistema é ser leve, intuitiva e eficiente, sendo ideal para clín
 - Um paciente não pode reservar um horário já ocupado
 - Apenas horários disponíveis podem ser reservados
 - Profissionais só aparecem disponíveis quando possuem horários livres
+- Operadores podem gerenciar consultas em nome dos pacientes
+- Administradores possuem acesso total ao sistema
 - Cancelamentos seguem regras de antecedência definidas pelo sistema
 
 ---
@@ -73,6 +94,24 @@ Antes da confirmação de uma consulta, o sistema verifica automaticamente:
 ---
 
 # 🗂️ Estrutura das Entidades
+
+## Administrador
+
+```text
+id
+nome
+email
+senha
+```
+
+## Operador
+
+```text
+id
+nome
+email
+senha
+```
 
 ## Profissional
 
@@ -115,6 +154,12 @@ status
 # 🔄 Relação Entre as Entidades
 
 ```text
+Administrador
+   └── gerencia → Sistema
+
+Operador
+   └── organiza → Agendamentos
+
 Profissional
    └── possui → Slots de Agenda
 
@@ -220,6 +265,7 @@ Este projeto foi desenvolvido para fins de estudo e prática de desenvolvimento 
 - Regras de negócio
 - Organização de agendas
 - Validações de sistema
+- Controle de permissões
 - Desenvolvimento full stack
 
 ---
@@ -233,6 +279,7 @@ Este projeto foi desenvolvido para fins de estudo e prática de desenvolvimento 
 - Integração com WhatsApp
 - Responsividade mobile
 - Painel do administrador
+- Controle de permissões por perfil
 
 ---
 
