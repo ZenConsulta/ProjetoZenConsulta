@@ -1,0 +1,67 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{baseLayout :: head}"></head>
+<body class="bg-background text-on-surface">
+
+<aside th:replace="~{baseLayout :: sidebar('buscar-medico')}"></aside>
+<header th:replace="~{baseLayout :: topbar('Perfil do Médico')}"></header>
+
+<main class="md:ml-64 pt-24 pb-12 px-margin-desktop">
+
+    <header class="mb-8 bg-surface-container-lowest border border-outline-variant p-6 rounded-xl flex flex-col md:flex-row gap-6 items-start">
+        <div class="w-32 h-32 rounded-xl bg-surface-container-high flex items-center justify-center flex-shrink-0">
+            <span class="material-symbols-outlined text-5xl text-primary">medical_services</span>
+        </div>
+        <div class="flex-1">
+            <div class="flex justify-between items-start">
+                <div>
+                    <h1 class="text-2xl font-bold" th:text="${medicoNome}">Nome do Médico</h1>
+                    <p class="text-primary font-semibold" th:text="${medicoEspecialidade}">Especialidade</p>
+                </div>
+                <span class="bg-secondary-container text-on-secondary-container text-sm px-3 py-1 rounded-full"
+                      th:text="'★ ' + ${medicoNota}">★ 4.9</span>
+            </div>
+            <p class="text-on-surface-variant mt-2" th:text="'Atende em: ' + ${medicoLocal}">Local de atendimento</p>
+        </div>
+    </header>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <section class="lg:col-span-8 bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden">
+            <div class="p-6 border-b border-outline-variant bg-surface-container-low">
+                <h3 class="text-xl font-semibold">Agendar Consulta</h3>
+                <p class="text-xs text-secondary">Selecione um horário disponível</p>
+            </div>
+
+            <div class="p-6 grid grid-cols-3 sm:grid-cols-5 gap-3">
+                <a th:each="horario, iStat : ${horariosDisponiveis}"
+                   th:href="@{/confirmar-agendamento(medico=${medicoNome},horario=${horario})}"
+                   class="border border-outline-variant py-2 text-center rounded hover:bg-primary-container hover:text-on-primary-container transition-all"
+                   th:text="${horario}">
+                    09:00
+                </a>
+            </div>
+        </section>
+
+        <aside class="lg:col-span-4 space-y-4">
+            <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-6">
+                <h3 class="text-lg font-semibold mb-3">Localização</h3>
+                <div class="flex gap-3">
+                    <span class="material-symbols-outlined text-primary">location_on</span>
+                    <div>
+                        <p class="font-bold" th:text="${medicoLocal}">Centro Médico</p>
+                        <p class="text-xs text-secondary">452 Health Way, Suite 200</p>
+                    </div>
+                </div>
+            </div>
+            <a th:href="@{/buscar-medico}" class="block text-center text-primary font-semibold hover:underline">
+                &larr; Voltar para a busca
+            </a>
+        </aside>
+    </div>
+</main>
+
+<footer th:replace="~{baseLayout :: footer}" class="md:ml-64"></footer>
+
+</body>
+</html>
