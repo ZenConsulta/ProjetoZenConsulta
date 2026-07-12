@@ -1,0 +1,161 @@
+<!--
+  =====================================================================================
+  baseLayout.html
+  =====================================================================================
+  Este arquivo NÃO é uma página navegável (ninguém acessa "/baseLayout" pelo browser).
+  Ele serve só como "biblioteca" de pedaços de HTML (fragmentos) reaproveitados pelas
+  4 páginas reais da aplicação: painel.html, busca-medicos.html, perfil-medico.html
+  e confirmacao.html.
+
+  Cada fragmento é declarado com th:fragment="nome" (ou "nome(parametros)") e é
+  "puxado" de outro arquivo com:
+        th:replace="~{baseLayout :: nomeDoFragmento}"
+
+  Vantagem didática: a config gigante do Tailwind, os links de fonte, o menu lateral
+  e o rodapé só existem UMA vez neste arquivo, em vez de repetidos e colados em
+  cada uma das 4 páginas (como estava no HTML estático original).
+  =====================================================================================
+-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- ================================================================
+         Fragmento "head": título, fontes, Tailwind (CDN) e CSS próprio.
+         Toda página chama: <head th:replace="~{baseLayout :: head}"></head>
+         ================================================================ -->
+    <th:block th:fragment="head">
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <!-- #{app.title} vem do messages.properties (i18n) -->
+        <title th:text="#{app.title} + ' | Portal do Paciente'">ZenConsulta</title>
+
+        <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800&display=swap"/>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"/>
+
+        <!-- th:href="@{...}" gera a URL correta considerando o contexto da app -->
+        <link rel="stylesheet" th:href="@{/css/estilo.css}"/>
+
+        <script id="tailwind-config">
+            tailwind.config = {
+                darkMode: "class",
+                theme: {
+                    extend: {
+                        colors: {
+                            "primary": "#006b58",
+                            "on-primary": "#ffffff",
+                            "primary-container": "#6cceb4",
+                            "on-primary-container": "#005647",
+                            "secondary": "#585e6c",
+                            "secondary-container": "#dde2f3",
+                            "on-secondary-container": "#5e6473",
+                            "tertiary": "#4c635f",
+                            "background": "#f8f9ff",
+                            "on-background": "#0d1c2e",
+                            "surface": "#f8f9ff",
+                            "surface-bright": "#f8f9ff",
+                            "surface-dim": "#ccdbf4",
+                            "surface-container-lowest": "#ffffff",
+                            "surface-container-low": "#eff4ff",
+                            "surface-container": "#e5eeff",
+                            "surface-container-high": "#dce9ff",
+                            "surface-container-highest": "#d4e4fc",
+                            "surface-variant": "#d4e4fc",
+                            "on-surface": "#0d1c2e",
+                            "on-surface-variant": "#3e4945",
+                            "outline": "#6e7a75",
+                            "outline-variant": "#bdc9c4",
+                            "error": "#ba1a1a"
+                        },
+                        borderRadius: { DEFAULT: "0.125rem", lg: "0.25rem", xl: "0.5rem", full: "0.75rem" },
+                        spacing: {
+                            "margin-desktop": "40px", "gutter": "24px", "unit": "8px",
+                            "margin-mobile": "16px", "md": "16px", "base": "4px",
+                            "xs": "8px", "xl": "32px", "lg": "24px", "sm": "12px"
+                        },
+                        fontFamily: {
+                            "label-md": ["Public Sans"], "body-md": ["Public Sans"],
+                            "headline-md": ["Public Sans"], "headline-lg": ["Public Sans"],
+                            "display-lg": ["Public Sans"]
+                        }
+                    }
+                }
+            }
+        </script>
+    </th:block>
+</head>
+<body>
+
+    <!-- ================================================================
+         Fragmento "sidebar(activePage)": menu lateral fixo.
+         Recebe um parâmetro (activePage) para saber qual item destacar.
+         Chamado assim em cada página:
+            <aside th:replace="~{baseLayout :: sidebar('painel')}"></aside>
+         ================================================================ -->
+    <aside th:fragment="sidebar(activePage)"
+           class="hidden md:flex flex-col h-screen w-64 bg-surface-bright border-r border-outline-variant fixed left-0 top-0 py-xl z-50">
+        <div class="px-lg mb-xl">
+            <h2 class="font-headline-md text-2xl font-extrabold text-primary leading-none" th:text="#{app.title}">ZenConsulta</h2>
+            <p class="text-xs text-secondary uppercase tracking-widest mt-1" th:text="#{app.subtitle}">Portal do Paciente</p>
+        </div>
+        <nav class="flex-1 space-y-1">
+            <a th:href="@{/painel}"
+               th:classappend="${activePage == 'painel'} ? 'text-primary bg-secondary-container font-bold border-r-4 border-primary' : 'text-secondary hover:bg-surface-container-high'"
+               class="flex items-center gap-3 px-lg py-sm transition-all">
+                <span class="material-symbols-outlined">dashboard</span>
+                <span class="text-sm font-semibold" th:text="#{nav.painel}">Painel</span>
+            </a>
+            <a th:href="@{/buscar-medico}"
+               th:classappend="${activePage == 'buscar-medico'} ? 'text-primary bg-secondary-container font-bold border-r-4 border-primary' : 'text-secondary hover:bg-surface-container-high'"
+               class="flex items-center gap-3 px-lg py-sm transition-all">
+                <span class="material-symbols-outlined">person_search</span>
+                <span class="text-sm font-semibold" th:text="#{nav.buscarMedico}">Encontrar um Médico</span>
+            </a>
+            <a href="#"
+               th:classappend="${activePage == 'consultas'} ? 'text-primary bg-secondary-container font-bold border-r-4 border-primary' : 'text-secondary hover:bg-surface-container-high'"
+               class="flex items-center gap-3 px-lg py-sm transition-all">
+                <span class="material-symbols-outlined">calendar_today</span>
+                <span class="text-sm font-semibold" th:text="#{nav.consultas}">Minhas Consultas</span>
+            </a>
+            <a href="#"
+               th:classappend="${activePage == 'prontuarios'} ? 'text-primary bg-secondary-container font-bold border-r-4 border-primary' : 'text-secondary hover:bg-surface-container-high'"
+               class="flex items-center gap-3 px-lg py-sm transition-all">
+                <span class="material-symbols-outlined">description</span>
+                <span class="text-sm font-semibold" th:text="#{nav.prontuarios}">Prontuários Médicos</span>
+            </a>
+            <a href="#" class="mt-auto flex items-center gap-3 px-lg py-sm text-secondary hover:bg-surface-container-high border-t border-outline-variant pt-4 transition-all">
+                <span class="material-symbols-outlined">settings</span>
+                <span class="text-sm font-semibold" th:text="#{nav.configuracoes}">Configurações</span>
+            </a>
+        </nav>
+    </aside>
+
+    <!-- ================================================================
+         Fragmento "topbar(titulo)": barra superior simples, reaproveitada
+         nas páginas que não precisam de campo de busca.
+         ================================================================ -->
+    <header th:fragment="topbar(titulo)"
+            class="fixed top-0 left-0 md:left-64 right-0 z-40 h-16 flex items-center justify-between px-gutter bg-surface border-b border-outline-variant">
+        <h2 class="font-headline-md text-xl font-bold text-primary" th:text="${titulo}">Título</h2>
+        <div class="flex items-center gap-4">
+            <span class="material-symbols-outlined text-secondary cursor-pointer">notifications</span>
+            <div class="h-8 w-8 rounded-full bg-surface-container-high border border-outline-variant"></div>
+        </div>
+    </header>
+
+    <!-- ================================================================
+         Fragmento "footer": rodapé institucional, igual em todas as telas.
+         ================================================================ -->
+    <footer th:fragment="footer"
+            class="w-full flex flex-col md:flex-row justify-between items-center px-margin-desktop py-lg bg-surface-container-lowest border-t border-outline-variant mt-xl">
+        <p class="text-xs text-on-surface-variant" th:text="#{footer.direitos}">© 2024 ZenConsulta</p>
+        <div class="flex gap-lg mt-2 md:mt-0">
+            <a href="#" class="text-xs text-on-surface-variant hover:text-primary" th:text="#{footer.privacidade}">Privacidade</a>
+            <a href="#" class="text-xs text-on-surface-variant hover:text-primary" th:text="#{footer.termos}">Termos</a>
+            <a href="#" class="text-xs text-on-surface-variant hover:text-primary" th:text="#{footer.ajuda}">Ajuda</a>
+            <a href="#" class="text-xs text-on-surface-variant hover:text-primary" th:text="#{footer.contato}">Contato</a>
+        </div>
+    </footer>
+
+</body>
+</html>
