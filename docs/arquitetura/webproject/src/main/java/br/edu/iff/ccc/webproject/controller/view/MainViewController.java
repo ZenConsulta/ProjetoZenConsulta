@@ -1,14 +1,14 @@
 package br.edu.iff.ccc.webproject.controller.view;
 
+import br.edu.iff.ccc.webproject.dto.MedicoDTO;
+import br.edu.iff.ccc.webproject.model.Medico;
+import br.edu.iff.ccc.webproject.usecase.CadastrarMedicoUseCase;
+import br.edu.iff.ccc.webproject.usecase.ListarMedicosUseCase;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * =====================================================================================
@@ -23,49 +23,37 @@ import java.util.Map;
  *   2) /buscar-medico         -> Busca de Médicos        (antigo "busca-medicos.html")
  *   3) /medico/{id}           -> Perfil do Médico        (antigo "perfil-medico.html")
  *   4) /confirmar-agendamento -> Confirmação de Consulta (antigo "confirmacao.html")
+ *   5) /medicos/novo (GET) e /medicos (POST) -> Cadastro de Médico
  *
  * -------------------------------------------------------------------------------------
- * CONCEITOS DE SPRING MVC USADOS AQUI (para estudo):
+ * NOVIDADE DA MILESTONE 4:
  * -------------------------------------------------------------------------------------
- * - @Controller        -> marca a classe como um controller "clássico" do Spring MVC,
- *                         ou seja, os métodos retornam o NOME de uma página (String),
- *                         e não um JSON (isso quem faz JSON é o @RestController).
+ * O antigo "medicosMock" (Map fixo dentro do controller) foi substituído pelo
+ * fluxo real de camadas:
  *
- * - @RequestMapping("/")   -> define um prefixo comum de URL para TODOS os métodos
- *                             desta classe. Assim cada @GetMapping abaixo só precisa
- *                             declarar o "resto" do caminho.
+ *   Controller (aqui)  --usa-->  UseCase (regra de negócio)  --usa-->  Repository (dados em memória)
  *
- * - @GetMapping("caminho") -> mapeia uma URL (HTTP GET) para um método Java.
- *
- * - @PathVariable   -> captura um pedaço da URL como variável.
- *                      Ex: /medico/7  -> id = 7
- *
- * - @RequestParam    -> captura parâmetros de query string (?chave=valor),
- *                       com valor padrão (defaultValue) caso não seja enviado.
- *                       Ex: /confirmar-agendamento?horario=14:30
- *
- * - Model            -> "mochila" de dados que o controller entrega para o HTML
- *                       (Thymeleaf). Tudo que é colocado em model.addAttribute(...)
- *                       pode ser lido no template com ${nomeDoAtributo}.
- *
- * - Retorno String    -> o nome do arquivo .html dentro de
- *                        src/main/resources/templates (sem a extensão .html),
- *                        resolvido automaticamente pelo Thymeleaf.
+ * O Controller não sabe MAIS COMO os médicos são guardados ou como o id é gerado —
+ * ele só pede pro UseCase "executar" a ação. Isso é Injeção de Dependência:
+ * o Spring cria o ListarMedicosUseCase e o CadastrarMedicoUseCase automaticamente
+ * (por causa do @Service neles) e "injeta" no construtor abaixo.
  * =====================================================================================
  */
 @Controller
 @RequestMapping("/")
 public class MainViewController {
 
-    // ---------------------------------------------------------------------------
-    // "Banco de dados" fake em memória, só para o exemplo funcionar sem precisar
-    // de banco de verdade. Em um projeto real isso viria de um Service + Repository.
-    // ---------------------------------------------------------------------------
-    private final Map<String, String[]> medicosMock = Map.of(
-            "1", new String[]{"Dra. Sarah Mitchell", "Cardiologista Sênior", "Centro do Coração e Vascular", "4.9"},
-            "2", new String[]{"Dr. James Wilson", "Cirurgião Cardiovascular", "Hospital Metodista", "4.7"},
-            "3", new String[]{"Dra. Alana Smith, MD", "Cardiologista e Clínica Geral", "Centro Médico Principal", "4.9"}
-    );
+    private final ListarMedicosUseCase listarMedicosUseCase;
+    private final CadastrarMedicoUseCase cadastrarMedicoUseCase;
+
+    // Injeção via construtor: o Spring identifica esses dois parâmetros e
+    // preenche automaticamente com as instâncias de ListarMedicosUseCase e
+    // CadastrarMedicoUseCase (que por sua vez recebem o Repository).
+    public MainViewController(ListarMedicosUseCase listarMedicosUseCase,
+                               CadastrarMedicoUseCase cadastrarMedicoUseCase) {
+        this.listarMedicosUseCase = listarMedicosUseCase;
+        this.cadastrarMedicoUseCase = cadastrarMedicoUseCase;
+    }
 
     // =========================================================================
     // 1) PAINEL DO PACIENTE (Dashboard)
@@ -84,22 +72,15 @@ public class MainViewController {
     // =========================================================================
     // 2) BUSCAR MÉDICO (listagem / filtros)
     //    URL: http://localhost:8080/buscar-medico
+    //    Agora vem do ListarMedicosUseCase -> InMemoryMedicoRepository,
+    //    em vez do Map fixo.
     // =========================================================================
     @GetMapping("buscar-medico")
     public String getBuscarMedico(Model model) {
-        // Monta uma lista simples (id + dados) a partir do mapa mock, só para
-        // ilustrar th:each no template iterando sobre dados vindos do controller.
-        List<Map<String, String>> listaMedicos = medicosMock.entrySet().stream()
-                .map(entry -> Map.of(
-                        "id", entry.getKey(),
-                        "nome", entry.getValue()[0],
-                        "especialidade", entry.getValue()[1],
-                        "local", entry.getValue()[2],
-                        "nota", entry.getValue()[3]))
-                .toList();
+        List<Medico> listaMedicos = listarMedicosUseCase.executar();
 
         model.addAttribute("medicos", listaMedicos);
-        model.addAttribute("totalEncontrados", medicosMock.size());
+        model.addAttribute("totalEncontrados", listaMedicos.size());
         return "busca-medicos"; // -> templates/busca-medicos.html
     }
 
@@ -109,14 +90,16 @@ public class MainViewController {
     // =========================================================================
     @GetMapping("medico/{id}")
     public String getPerfilMedico(@PathVariable("id") String id, Model model) {
-        // Busca simples no mapa mock; se não achar, usa um médico padrão.
-        String[] medico = medicosMock.getOrDefault(id, medicosMock.get("3"));
+        Medico medico = listarMedicosUseCase.executar().stream()
+                .filter(m -> m.getId().equals(id))
+                .findFirst()
+                .orElse(listarMedicosUseCase.executar().get(0));
 
-        model.addAttribute("medicoId", id);
-        model.addAttribute("medicoNome", medico[0]);
-        model.addAttribute("medicoEspecialidade", medico[1]);
-        model.addAttribute("medicoLocal", medico[2]);
-        model.addAttribute("medicoNota", medico[3]);
+        model.addAttribute("medicoId", medico.getId());
+        model.addAttribute("medicoNome", medico.getNome());
+        model.addAttribute("medicoEspecialidade", medico.getEspecialidade());
+        model.addAttribute("medicoLocal", medico.getLocal());
+        model.addAttribute("medicoNota", medico.getNota());
         model.addAttribute("horariosDisponiveis",
                 List.of("09:00", "09:30", "10:30", "11:00", "13:30", "14:00", "14:30", "15:00", "15:30"));
         return "perfil-medico"; // -> templates/perfil-medico.html
@@ -125,8 +108,6 @@ public class MainViewController {
     // =========================================================================
     // 4) CONFIRMAÇÃO DE AGENDAMENTO
     //    URL: http://localhost:8080/confirmar-agendamento?medico=Dra.%20Sarah%20Jenkins&horario=10:30
-    //    (Os @RequestParam abaixo têm valor padrão, então a página funciona
-    //     mesmo sem parâmetros na URL.)
     // =========================================================================
     @GetMapping("confirmar-agendamento")
     public String getConfirmarAgendamento(
@@ -140,6 +121,23 @@ public class MainViewController {
         model.addAttribute("data", data);
         model.addAttribute("horario", horario);
         return "confirmacao"; // -> templates/confirmacao.html
+    }
+
+    // =========================================================================
+    // 5) CADASTRO DE MÉDICO (novo fluxo da Milestone 4)
+    //    GET  /medicos/novo -> mostra o formulário
+    //    POST /medicos      -> recebe o DTO preenchido e chama o UseCase
+    // =========================================================================
+    @GetMapping("medicos/novo")
+    public String getFormularioMedico(Model model) {
+        model.addAttribute("medicoDTO", new MedicoDTO());
+        return "cadastro-medico"; // -> templates/cadastro-medico.html
+    }
+
+    @PostMapping("medicos")
+    public String salvarMedico(@ModelAttribute("medicoDTO") MedicoDTO medicoDTO) {
+        cadastrarMedicoUseCase.executar(medicoDTO);
+        return "redirect:/buscar-medico";
     }
 
     // =========================================================================
