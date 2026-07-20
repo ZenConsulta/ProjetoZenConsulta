@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{baseLayout :: head}"></head>
+<body class="bg-background text-on-surface">
+<aside th:replace="~{baseLayout :: sidebar('buscar-medico')}"></aside>
+<header th:replace="~{baseLayout :: topbar('Cadastrar Médico')}"></header>
+
+<main class="md:ml-64 pt-24 pb-12 px-margin-desktop">
+    <div class="max-w-2xl mx-auto">
+
+        <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-6">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="bg-secondary-container p-3 rounded-lg">
+                    <span class="material-symbols-outlined text-primary">stethoscope</span>
+                </div>
+                <div>
+                    <h2 class="text-xl font-semibold">Novo Médico</h2>
+                    <p class="text-sm text-secondary">Preencha os dados para adicionar à lista</p>
+                </div>
+            </div>
+
+            <form th:action="@{/medicos}" th:object="${medicoDTO}" method="post" class="space-y-4">
+
+                <div>
+                    <label class="block text-sm text-secondary mb-1" for="nome">Nome</label>
+                    <input id="nome" type="text" th:field="*{nome}" required
+                           class="w-full border border-outline-variant rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"/>
+                </div>
+
+                <div>
+                    <label class="block text-sm text-secondary mb-1" for="especialidade">Especialidade</label>
+                    <input id="especialidade" type="text" th:field="*{especialidade}" required
+                           class="w-full border border-outline-variant rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"/>
+                </div>
+
+                <div>
+                    <label class="block text-sm text-secondary mb-1" for="local">Local</label>
+                    <input id="local" type="text" th:field="*{local}" required
+                           class="w-full border border-outline-variant rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"/>
+                </div>
+
+                <div>
+                    <label class="block text-sm text-secondary mb-1" for="nota">Nota</label>
+                    <input id="nota" type="text" th:field="*{nota}" required
+                           class="w-full border border-outline-variant rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"/>
+                </div>
+
+                <div class="flex gap-3 pt-2">
+                    <button type="submit"
+                            class="flex-1 bg-primary text-on-primary rounded-lg py-2.5 text-sm font-bold hover:opacity-90 transition">
+                        Cadastrar
+                    </button>
+                    <a th:href="@{/buscar-medico}"
+                       class="flex-1 text-center border border-outline-variant text-secondary rounded-lg py-2.5 text-sm font-bold hover:bg-surface-container-low transition">
+                        Cancelar
+                    </a>
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+</main>
+
+<footer th:replace="~{baseLayout :: footer}" class="md:ml-64"></footer>
+</body>
+</html>
