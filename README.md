@@ -101,7 +101,6 @@ Antes da confirmação de uma consulta, o sistema verifica automaticamente:
 id
 nome
 email
-senha
 ```
 
 ## Operador
@@ -110,7 +109,6 @@ senha
 id
 nome
 email
-senha
 ```
 
 ## Profissional
@@ -119,6 +117,7 @@ senha
 id
 nome
 especialidade
+email
 ```
 
 ## Paciente
@@ -126,6 +125,8 @@ especialidade
 ```text
 id
 nome
+email
+telefone
 ```
 
 ## Slot de Agenda
@@ -135,7 +136,8 @@ Representa os horários disponíveis para atendimento.
 ```text
 id
 profissional_id
-data_hora
+data
+horario
 disponivel
 ```
 
@@ -145,9 +147,13 @@ disponivel
 id
 paciente_id
 profissional_id
-slot_id
-status
+slot_agenda_id
+operador_responsavel_id
+status   (PENDENTE, CONFIRMADO, CANCELADO)
 ```
+
+> 🔒 O campo `senha` (autenticação/login) ainda não foi implementado nesta
+> fase do projeto — está listado em **Melhorias Futuras**, mais abaixo.
 
 ---
 
@@ -170,43 +176,63 @@ Agendamento
    └── conecta → Paciente + Profissional + Slot
 ```
 
+📎 Diagrama de classes completo em [`docs/diagrama-classes.md`](./docs/diagrama-classes.md).
+
 ---
 
 # 🛠️ Tecnologias Utilizadas
 
-> Atualize conforme a stack utilizada no projeto.
+## Back-end
+
+- **Java 17**
+- **Spring Boot 3** (Spring MVC)
+- **Thymeleaf** (renderização de páginas HTML server-side)
+- Arquitetura em camadas: `Controller` → `Service` → `Repository`
 
 ## Front-end
 
-- HTML
-- CSS
-- JavaScript
+- HTML + Thymeleaf (fragmentos reutilizáveis: cabeçalho, menu, rodapé)
+- Tailwind CSS (via CDN)
 
-## Back-end
+## Persistência
 
-- Node.js
-
-## Banco de Dados
-
-- MySQL
+- **Repositório em memória** (`Map` interno, sem banco de dados externo)
+  nesta fase do projeto — cada entidade tem seu próprio repositório,
+  todos herdando uma classe genérica (`RepositorioMemoria<T>`).
+- A troca para um banco de dados real (ex: PostgreSQL/MySQL via Spring
+  Data JPA) está prevista para uma fase futura do projeto, sem necessidade
+  de alterar a camada de `Service`/`Controller`.
 
 ## Ferramentas
 
 - Git
 - GitHub
+- Maven (`mvnw` incluso no projeto — não precisa instalar Maven separado)
 
 ---
 
 # 📂 Estrutura do Projeto
 
 ```bash
-📦 agendamento-consultorio
+📦 webproject
+ ┣ 📂 docs
+ ┃ ┗ 📜 diagrama-classes.md
  ┣ 📂 src
- ┣ 📂 public
- ┣ 📂 components
- ┣ 📂 routes
- ┣ 📂 database
- ┣ 📜 package.json
+ ┃ ┗ 📂 main
+ ┃   ┣ 📂 java/br/edu/iff/ccc/webproject
+ ┃   ┃ ┣ 📂 model          → entidades de domínio (Paciente, Profissional, ...)
+ ┃   ┃ ┣ 📂 dto             → objetos usados nos formulários (Thymeleaf)
+ ┃   ┃ ┣ 📂 repository       → interface genérica + repositórios em memória
+ ┃   ┃ ┣ 📂 service          → regras de negócio (CRUD + validações)
+ ┃   ┃ ┣ 📂 exception         → exceções de regra de negócio
+ ┃   ┃ ┣ 📂 controller/view    → controllers que servem as páginas Thymeleaf
+ ┃   ┃ ┗ 📜 WebprojectApplication.java
+ ┃   ┗ 📂 resources
+ ┃     ┣ 📂 static/css        → estilo.css
+ ┃     ┣ 📂 templates          → páginas .html (Thymeleaf), organizadas por entidade
+ ┃     ┣ 📜 application.properties
+ ┃     ┗ 📜 messages.properties
+ ┣ 📜 pom.xml
  ┗ 📜 README.md
 ```
 
@@ -214,34 +240,53 @@ Agendamento
 
 # 🚀 Como Executar o Projeto
 
+## Pré-requisitos
+
+- **Java 17** ou superior instalado (`java -version` para conferir)
+- Não é necessário instalar o Maven separadamente — o projeto já inclui o
+  Maven Wrapper (`mvnw` / `mvnw.cmd`)
+
 ## Clone o repositório
 
 ```bash
-git clone https://github.com/seu-usuario/agendamento-consultorio.git
+git clone https://github.com/ZenConsulta/ProjetoZenConsulta.git
 ```
 
 ## Acesse a pasta do projeto
 
 ```bash
-cd agendamento-consultorio
-```
-
-## Instale as dependências
-
-```bash
-npm install
-```
-
-## Configure as variáveis de ambiente
-
-```bash
-cp .env.example .env
+cd ProjetoZenConsulta
 ```
 
 ## Execute o projeto
 
+No Linux/Mac:
 ```bash
-npm run dev
+./mvnw spring-boot:run
+```
+
+No Windows:
+```bash
+mvnw.cmd spring-boot:run
+```
+
+## Acesse no navegador
+
+Com o servidor rodando, abra:
+
+```
+http://localhost:8080/painel
+```
+
+A área administrativa (CRUD de todas as entidades) fica em:
+
+```
+http://localhost:8080/agendamentos
+http://localhost:8080/pacientes
+http://localhost:8080/profissionais
+http://localhost:8080/operadores
+http://localhost:8080/administradores
+http://localhost:8080/slots
 ```
 
 ---
@@ -272,14 +317,14 @@ Este projeto foi desenvolvido para fins de estudo e prática de desenvolvimento 
 
 # 📈 Melhorias Futuras
 
-- Sistema de login e autenticação
-- Dashboard administrativo
+- Sistema de login e autenticação (campo `senha`, Spring Security)
+- Persistência em banco de dados real (Spring Data JPA)
+- Dashboard administrativo com relatórios
 - Histórico de consultas
 - Notificações por e-mail
 - Integração com WhatsApp
 - Responsividade mobile
-- Painel do administrador
-- Controle de permissões por perfil
+- Controle de permissões por perfil (autorização por rota)
 
 ---
 
