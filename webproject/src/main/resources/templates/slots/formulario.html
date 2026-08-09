@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{baseLayout :: head}"></head>
+<body class="bg-background text-on-surface">
+<nav th:replace="~{baseLayout :: adminNav('slots')}"></nav>
+
+<main class="px-margin-desktop py-8 max-w-xl">
+    <h1 class="text-2xl font-bold mb-6">Novo Horário (Slot de Agenda)</h1>
+
+    <form th:action="@{/slots}" th:object="${slot}" method="post"
+          class="bg-surface-container-lowest border border-outline-variant rounded-xl p-6 space-y-4">
+
+        <div>
+            <label class="block text-xs uppercase text-secondary mb-1">Profissional</label>
+            <select th:field="*{profissionalId}" required class="w-full border border-outline-variant rounded-lg p-2">
+                <option value="">Selecione...</option>
+                <option th:each="p : ${profissionais}" th:value="${p.id}" th:text="${p.nome} + ' - ' + ${p.especialidade}">Profissional</option>
+            </select>
+        </div>
+        <div>
+            <label class="block text-xs uppercase text-secondary mb-1">Data</label>
+            <input type="date" th:field="*{data}" required class="w-full border border-outline-variant rounded-lg p-2"/>
+        </div>
+        <div>
+            <label class="block text-xs uppercase text-secondary mb-1">Horário</label>
+            <input type="time" th:field="*{horario}" required class="w-full border border-outline-variant rounded-lg p-2"/>
+        </div>
+
+        <div class="flex gap-3 pt-2">
+            <button type="submit" class="bg-primary text-on-primary px-6 py-2 rounded-lg font-semibold">Salvar</button>
+            <a th:href="@{/slots}" class="text-secondary px-6 py-2">Cancelar</a>
+        </div>
+    </form>
+</main>
+
+<footer th:replace="~{baseLayout :: footer}"></footer>
+</body>
+</html>
