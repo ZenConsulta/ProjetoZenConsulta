@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{baseLayout :: head}"></head>
+<body class="bg-background text-on-surface">
+<nav th:replace="~{baseLayout :: adminNav('pacientes')}"></nav>
+<div th:replace="~{baseLayout :: mensagens}"></div>
+
+<main class="px-margin-desktop py-8">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl font-bold">Pacientes</h1>
+        <a th:href="@{/pacientes/novo}" class="bg-primary text-on-primary px-4 py-2 rounded-lg font-semibold">+ Novo Paciente</a>
+    </div>
+
+    <div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden">
+        <table class="w-full text-left border-collapse">
+            <thead class="bg-surface-container-low border-b border-outline-variant">
+            <tr>
+                <th class="px-6 py-3 text-xs uppercase text-secondary">Nome</th>
+                <th class="px-6 py-3 text-xs uppercase text-secondary">Email</th>
+                <th class="px-6 py-3 text-xs uppercase text-secondary">Telefone</th>
+                <th class="px-6 py-3 text-xs uppercase text-secondary">Ações</th>
+            </tr>
+            </thead>
+            <tbody class="divide-y divide-outline-variant">
+            <tr th:each="p : ${pacientes}">
+                <td class="px-6 py-3 font-semibold" th:text="${p.nome}">Nome</td>
+                <td class="px-6 py-3 text-on-surface-variant" th:text="${p.email}">Email</td>
+                <td class="px-6 py-3 text-on-surface-variant" th:text="${p.telefone}">Telefone</td>
+                <td class="px-6 py-3 flex gap-3 items-center">
+                    <a th:href="@{/pacientes/{id}/editar(id=${p.id})}" class="text-primary text-sm font-semibold hover:underline">Editar</a>
+                    <form th:action="@{/pacientes/{id}/excluir(id=${p.id})}" method="post" onsubmit="return confirm('Remover este paciente?');">
+                        <button type="submit" class="text-error text-sm font-semibold hover:underline">Excluir</button>
+                    </form>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(pacientes)}">
+                <td colspan="4" class="px-6 py-6 text-center text-on-surface-variant">Nenhum paciente cadastrado.</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+
+<footer th:replace="~{baseLayout :: footer}"></footer>
+</body>
+</html>
