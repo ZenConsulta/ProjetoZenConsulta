@@ -1,0 +1,23 @@
+/* =====================================================================
+   estilo.css
+   Estilos globais compartilhados por TODAS as páginas.
+   Referenciado no <head> (fragmento "head" do baseLayout.html) com:
+       <link rel="stylesheet" th:href="@{/css/estilo.css}">
+   O uso de th:href="@{...}" garante que o caminho funcione mesmo se a
+   aplicação for publicada em um subcaminho (ex: /webproject/css/...).
+   ===================================================================== */
+
+body {
+    font-family: 'Public Sans', sans-serif;
+    background-color: #f8f9ff;
+}
+
+.material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    vertical-align: middle;
+}
+
+/* Scrollbar customizada usada nas listagens (ex: busca de médicos) */
+.custom-scrollbar::-webkit-scrollbar { width: 4px; }
+.custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+.custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }

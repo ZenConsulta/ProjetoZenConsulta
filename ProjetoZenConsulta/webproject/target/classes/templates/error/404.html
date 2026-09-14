@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{baseLayout :: head}"></head>
+<body class="bg-background text-on-surface">
+
+<main class="min-h-screen flex flex-col items-center justify-center text-center px-6">
+    <span class="material-symbols-outlined text-6xl text-secondary mb-4">search_off</span>
+    <h1 class="text-3xl font-bold mb-2">Não encontramos isso</h1>
+    <p class="text-on-surface-variant max-w-md mb-6" th:text="${mensagem}">
+        O recurso solicitado não existe ou já foi removido.
+    </p>
+    <a th:href="@{/painel}" class="bg-primary text-on-primary px-6 py-2 rounded-lg font-semibold">
+        Voltar ao Painel
+    </a>
+</main>
+
+</body>
+</html>
