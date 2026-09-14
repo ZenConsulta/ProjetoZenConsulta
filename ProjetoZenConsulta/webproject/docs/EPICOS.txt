@@ -1,0 +1,110 @@
+# Épicos — Sistema de Clínica
+
+---
+
+## EPIC-01: Agendamento de Consultas
+
+| Atributo | Valor |
+|----------|------|
+| ID do Épico | EPIC-01 |
+| Persona Principal | Paciente |
+
+---
+
+### Descrição
+
+Este épico representa a principal funcionalidade do sistema: o agendamento de consultas médicas.
+
+Ele permite que pacientes visualizem profissionais e horários disponíveis, realizem solicitações de agendamento e cancelem consultas quando necessário.
+
+O objetivo é garantir um fluxo organizado e eficiente de marcação de consultas.
+
+---
+
+### Escopo e Funcionalidades Principais
+
+- Visualização de profissionais disponíveis  
+- Visualização de horários disponíveis  
+- Solicitação de agendamento  
+- Cancelamento de consultas  
+- Atualização de status do agendamento  
+
+---
+
+### 📜 Histórias de Usuário
+
+- HU01: Solicitação de Agendamento de Consulta  
+- HU04: Cancelamento de Agendamento  
+- HU07: Visualização de Horários Disponíveis  
+
+---
+
+### 🚀 Requisitos Não-Funcionais Chave
+
+- Usabilidade: Interface simples e intuitiva  
+- Desempenho: Resposta rápida ao carregar horários  
+- Confiabilidade: Evitar conflitos de agendamento  
+
+---
+
+### ✅ Critérios de Aceite do Épico
+
+- O paciente consegue visualizar profissionais disponíveis  
+- O paciente consegue visualizar horários disponíveis  
+- O paciente consegue solicitar um agendamento  
+- O sistema registra o agendamento como "pendente"  
+- O paciente consegue cancelar um agendamento  
+- O sistema mantém consistência nos horários  
+
+---
+
+## EPIC-02: Gestão de Agenda e Operações da Clínica
+
+| Atributo | Valor |
+|----------|------|
+| ID do Épico | EPIC-02 |
+| Persona Principal | Operador / Profissional / Administrador |
+
+---
+
+### Descrição
+
+Este épico cobre a gestão interna do sistema, permitindo que operadores, profissionais e administradores controlem os agendamentos e a agenda da clínica.
+
+Ele garante que os atendimentos sejam organizados, validados e acompanhados corretamente.
+
+---
+
+### Escopo e Funcionalidades Principais
+
+- Confirmação de agendamentos  
+- Definição de horários pelos profissionais  
+- Visualização de agenda  
+- Gerenciamento do sistema  
+
+---
+
+### 📜 Histórias de Usuário
+
+- HU02: Confirmação de Agendamento  
+- HU03: Definição de Horários Disponíveis  
+- HU05: Visualização da Agenda do Profissional  
+- HU06: Gerenciamento do Sistema  
+
+---
+
+### 🚀 Requisitos Não-Funcionais Chave
+
+- Segurança: Controle de acesso por tipo de usuário  
+- Integridade: Dados consistentes  
+- Disponibilidade: Sistema acessível  
+
+---
+
+### ✅ Critérios de Aceite do Épico
+
+- O operador consegue confirmar agendamentos pendentes  
+- O profissional consegue definir horários disponíveis  
+- O profissional consegue visualizar sua agenda  
+- O administrador consegue gerenciar o sistema  
+- O sistema respeita permissões de acesso  

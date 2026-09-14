@@ -1,0 +1,251 @@
+# Histórias de Usuário — Sistema de Clínica
+
+---
+
+## HU01: Solicitação de Agendamento de Consulta
+
+### Estrutura dos 3 Ws
+
+**WHO? (Quem?)**  
+Paciente  
+
+**WHAT? (O Quê?)**  
+Solicitar um agendamento de consulta com um profissional em um horário disponível  
+
+**WHY? (Por Quê?)**  
+Para conseguir atendimento médico  
+
+---
+
+### História de Usuário Completa
+
+Como um paciente, eu quero solicitar um agendamento de consulta com um profissional em um horário disponível, para que eu possa receber atendimento médico.
+
+---
+
+### Descrição
+
+Essa funcionalidade permite que o paciente escolha um profissional e selecione um horário previamente cadastrado no sistema. O agendamento será registrado com status inicial "pendente", aguardando confirmação.
+
+---
+
+### ✅ Critérios de Aceite
+
+- O paciente deve visualizar os profissionais disponíveis  
+- O paciente deve visualizar os horários disponíveis por profissional  
+- O paciente deve conseguir selecionar um horário válido  
+- O sistema deve registrar o agendamento com status "pendente"  
+- O sistema não deve permitir agendamentos em horários já ocupados  
+
+---
+
+## HU02: Confirmação de Agendamento
+
+### Estrutura dos 3 Ws
+
+**WHO? (Quem?)**  
+Operador  
+
+**WHAT? (O Quê?)**  
+Confirmar um agendamento solicitado  
+
+**WHY? (Por Quê?)**  
+Para validar e organizar a agenda da clínica  
+
+---
+
+### História de Usuário Completa
+
+Como um operador, eu quero confirmar um agendamento solicitado por um paciente, para que a consulta seja oficialmente marcada.
+
+---
+
+### Descrição
+
+O operador é responsável por validar os agendamentos pendentes. Após a confirmação, o status do agendamento é atualizado para "confirmado" e o operador responsável é registrado.
+
+---
+
+### ✅ Critérios de Aceite
+
+- O operador deve visualizar agendamentos pendentes  
+- O operador deve conseguir confirmar um agendamento  
+- O status deve ser alterado para "confirmado"  
+- O sistema deve registrar o operador responsável pela confirmação  
+
+---
+
+## HU03: Definição de Horários Disponíveis
+
+### Estrutura dos 3 Ws
+
+**WHO? (Quem?)**  
+Profissional  
+
+**WHAT? (O Quê?)**  
+Definir horários disponíveis para atendimento  
+
+**WHY? (Por Quê?)**  
+Para permitir que pacientes agendem consultas  
+
+---
+
+### História de Usuário Completa
+
+Como um profissional, eu quero definir meus horários disponíveis, para que os pacientes possam agendar consultas.
+
+---
+
+### Descrição
+
+O profissional cadastra previamente seus horários disponíveis no sistema. Esses horários serão utilizados pelos pacientes no momento do agendamento.
+
+---
+
+### ✅ Critérios de Aceite
+
+- O profissional deve conseguir cadastrar horários disponíveis  
+- Os horários devem estar vinculados ao profissional  
+- Os horários devem ser exibidos para os pacientes  
+- O sistema não deve permitir horários duplicados  
+
+---
+
+## HU04: Cancelamento de Agendamento
+
+### Estrutura dos 3 Ws
+
+**WHO? (Quem?)**  
+Paciente  
+
+**WHAT? (O Quê?)**  
+Cancelar um agendamento existente  
+
+**WHY? (Por Quê?)**  
+Para liberar o horário caso não possa comparecer  
+
+---
+
+### História de Usuário Completa
+
+Como um paciente, eu quero cancelar um agendamento, para que o horário fique disponível novamente.
+
+---
+
+### Descrição
+
+Permite que o paciente cancele uma consulta previamente agendada. O sistema deve atualizar o status e liberar o horário para novos agendamentos.
+
+---
+
+### ✅ Critérios de Aceite
+
+- O paciente deve visualizar seus agendamentos  
+- O paciente deve conseguir cancelar um agendamento  
+- O status deve ser alterado para "cancelado"  
+- O horário deve voltar a ficar disponível  
+
+---
+
+## HU05: Visualização da Agenda do Profissional
+
+### Estrutura dos 3 Ws
+
+**WHO? (Quem?)**  
+Profissional  
+
+**WHAT? (O Quê?)**  
+Visualizar sua agenda de consultas  
+
+**WHY? (Por Quê?)**  
+Para organizar seus atendimentos  
+
+---
+
+### História de Usuário Completa
+
+Como um profissional, eu quero visualizar minha agenda de consultas, para organizar meus atendimentos.
+
+---
+
+### Descrição
+
+O profissional pode visualizar todos os seus agendamentos, incluindo informações como paciente, horário e status.
+
+---
+
+### ✅ Critérios de Aceite
+
+- O profissional deve visualizar suas consultas  
+- Cada consulta deve exibir paciente, data e horário  
+- O status deve ser visível (pendente, confirmado, cancelado)  
+
+---
+
+## HU06: Gerenciamento do Sistema
+
+### Estrutura dos 3 Ws
+
+**WHO? (Quem?)**  
+Administrador  
+
+**WHAT? (O Quê?)**  
+Gerenciar o funcionamento do sistema  
+
+**WHY? (Por Quê?)**  
+Para garantir o controle e organização da clínica  
+
+---
+
+### História de Usuário Completa
+
+Como um administrador, eu quero gerenciar o sistema, para garantir que tudo funcione corretamente.
+
+---
+
+### Descrição
+
+O administrador possui acesso geral ao sistema, podendo visualizar usuários e garantir que as permissões e operações estejam corretas.
+
+---
+
+### ✅ Critérios de Aceite
+
+- O administrador deve acessar o sistema com permissões elevadas  
+- O administrador deve visualizar usuários cadastrados  
+- O sistema deve respeitar os níveis de acesso  
+
+---
+
+## HU07: Visualização de Horários Disponíveis
+
+### Estrutura dos 3 Ws
+
+**WHO? (Quem?)**  
+Paciente  
+
+**WHAT? (O Quê?)**  
+Visualizar horários disponíveis de um profissional  
+
+**WHY? (Por Quê?)**  
+Para escolher um horário para agendamento  
+
+---
+
+### História de Usuário Completa
+
+Como um paciente, eu quero visualizar os horários disponíveis de um profissional, para escolher um horário para agendar minha consulta.
+
+---
+
+### Descrição
+
+Essa funcionalidade permite que o paciente veja apenas os horários livres cadastrados por um profissional, facilitando a escolha no momento do agendamento.
+
+---
+
+### ✅ Critérios de Aceite
+
+- O paciente deve visualizar apenas horários disponíveis  
+- Os horários devem estar vinculados ao profissional  
+- Horários já ocupados não devem ser exibidos  
