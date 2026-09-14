@@ -5,11 +5,6 @@ import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
 import org.springframework.context.annotation.Configuration;
 
-/**
- * Metadados exibidos no topo da tela do Swagger UI (/swagger-ui.html).
- * Não precisa de nenhum bean além dessa anotação — o springdoc-openapi
- * já escaneia todos os @RestController automaticamente.
- */
 @OpenAPIDefinition(
         info = @Info(
                 title = "ZenConsulta API",
