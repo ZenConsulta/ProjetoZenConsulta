@@ -44,8 +44,6 @@ public class SlotAgendaViewController {
     @PostMapping
     public String salvar(@Valid @ModelAttribute("slot") SlotAgendaDTO dto, BindingResult bindingResult, Model model, RedirectAttributes redirect) {
         if (bindingResult.hasErrors()) {
-            // Reconstrói os atributos que o formulário precisa pra
-            // renderizar de novo (o <select> de profissionais).
             model.addAttribute("profissionais", profissionalService.listarTodos());
             return "slots/formulario";
         }
