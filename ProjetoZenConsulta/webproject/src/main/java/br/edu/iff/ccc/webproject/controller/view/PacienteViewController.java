@@ -64,10 +64,6 @@ public class PacienteViewController {
         return "redirect:/pacientes";
     }
 
-    // Sem try/catch aqui de propósito: se o id não existir (ou qualquer
-    // outra regra falhar), a exceção sobe e quem trata é o
-    // GlobalExceptionHandler (TR06) — centralizado, em vez de repetido
-    // em cada controller.
     @PostMapping("{id}/excluir")
     public String excluir(@PathVariable Long id, RedirectAttributes redirect) {
         service.remover(id);
