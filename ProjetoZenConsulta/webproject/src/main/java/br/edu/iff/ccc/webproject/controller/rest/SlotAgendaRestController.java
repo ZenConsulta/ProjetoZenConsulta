@@ -15,11 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.util.List;
 
-/**
- * Sem PUT/atualizar de propósito: editar um horário que já pode estar
- * vinculado a um agendamento quebraria a consistência dos dados — mesma
- * decisão já tomada no fluxo MVC (SlotAgendaViewController).
- */
 @RestController
 @RequestMapping("/api/slots")
 @Tag(name = "Horários (Slots)", description = "Cadastro de horários disponíveis por profissional")

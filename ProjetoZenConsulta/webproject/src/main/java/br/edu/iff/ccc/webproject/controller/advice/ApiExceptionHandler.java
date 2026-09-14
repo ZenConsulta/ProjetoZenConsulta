@@ -21,26 +21,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-/**
- * =====================================================================
- * ApiExceptionHandler (TR07) — respostas de erro no padrão RFC 9457
- * =====================================================================
- * @RestControllerAdvice, diferente de @ControllerAdvice, sempre serializa
- * o retorno como corpo da resposta (JSON), nunca como página HTML — é o
- * tratamento de erro específico da API REST, separado do GlobalExceptionHandler
- * (que trata o fluxo de telas MVC).
- *
- * "annotations = RestController.class" restringe esse Advice a atuar
- * SOMENTE sobre classes anotadas com @RestController (a API /api/**).
- * Sem essa restrição, ele concorreria com o GlobalExceptionHandler (que
- * cuida das telas Thymeleaf) para as MESMAS exceções, e o Spring não tem
- * como saber automaticamente qual dos dois deveria responder.
- *
- * Estender ResponseEntityExceptionHandler dá acesso a handlers prontos do
- * Spring para vários erros comuns (parâmetro inválido, método HTTP errado
- * etc.) — aqui só sobrescrevemos o de validação (@Valid) e adicionamos os
- * handlers das nossas exceções de domínio.
- */
 @RestControllerAdvice(annotations = RestController.class)
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -71,12 +51,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(problem);
     }
 
-    /**
-     * Sobrescreve o handler padrão do Spring para erros de @Valid.
-     * É aqui que a estrutura da RFC 9457 ganha a propriedade extra
-     * "invalid_params", listando CADA campo que falhou e o motivo —
-     * exatamente o que o TR07 pede.
-     */
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
             MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {

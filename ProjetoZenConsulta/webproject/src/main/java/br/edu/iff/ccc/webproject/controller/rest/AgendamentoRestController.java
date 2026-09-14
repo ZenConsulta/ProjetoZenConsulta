@@ -15,12 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.util.List;
 
-/**
- * Endpoints de negócio (confirmar/cancelar) usam PATCH, não PUT — PUT
- * normalmente significa "substituir o recurso inteiro"; aqui é uma
- * transição de estado parcial e específica, o que o verbo PATCH
- * representa melhor semanticamente.
- */
 @RestController
 @RequestMapping("/api/agendamentos")
 @Tag(name = "Agendamentos", description = "Solicitação, confirmação e cancelamento de consultas")
