@@ -51,12 +51,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(problem);
     }
 
-    /**
-     * Sobrescreve o handler padrão do Spring para erros de @Valid.
-     * É aqui que a estrutura da RFC 9457 ganha a propriedade extra
-     * "invalid_params", listando CADA campo que falhou e o motivo —
-     * exatamente o que o TR07 pede.
-     */
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
             MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
