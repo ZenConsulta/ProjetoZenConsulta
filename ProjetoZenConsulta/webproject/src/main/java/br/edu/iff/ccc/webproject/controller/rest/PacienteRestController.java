@@ -14,14 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.util.List;
 
-/**
- * =====================================================================
- * PacienteRestController (TR07)
- * =====================================================================
- * API REST independente do fluxo MVC (que continua existindo em
- * PacienteViewController, servindo páginas HTML). Aqui a "view" é sempre
- * JSON, o Controller só traduz HTTP <-> Service, sem nenhuma regra.
- */
 @RestController
 @RequestMapping("/api/pacientes")
 @Tag(name = "Pacientes", description = "Operações de CRUD para o cadastro de pacientes")
