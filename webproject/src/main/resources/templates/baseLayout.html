@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <th:block th:fragment="head">
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+        <title th:text="#{app.title} + ' | Portal do Paciente'">ZenConsulta</title>
+
+        <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800&display=swap"/>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"/>
+
+        <link rel="stylesheet" th:href="@{/css/estilo.css}"/>
+
+        <script id="tailwind-config">
+            tailwind.config = {
+                darkMode: "class",
+                theme: {
+                    extend: {
+                        colors: {
+                            "primary": "#006b58",
+                            "on-primary": "#ffffff",
+                            "primary-container": "#6cceb4",
+                            "on-primary-container": "#005647",
+                            "secondary": "#585e6c",
+                            "secondary-container": "#dde2f3",
+                            "on-secondary-container": "#5e6473",
+                            "tertiary": "#4c635f",
+                            "background": "#f8f9ff",
+                            "on-background": "#0d1c2e",
+                            "surface": "#f8f9ff",
+                            "surface-bright": "#f8f9ff",
+                            "surface-dim": "#ccdbf4",
+                            "surface-container-lowest": "#ffffff",
+                            "surface-container-low": "#eff4ff",
+                            "surface-container": "#e5eeff",
+                            "surface-container-high": "#dce9ff",
+                            "surface-container-highest": "#d4e4fc",
+                            "surface-variant": "#d4e4fc",
+                            "on-surface": "#0d1c2e",
+                            "on-surface-variant": "#3e4945",
+                            "outline": "#6e7a75",
+                            "outline-variant": "#bdc9c4",
+                            "error": "#ba1a1a"
+                        },
+                        borderRadius: { DEFAULT: "0.125rem", lg: "0.25rem", xl: "0.5rem", full: "0.75rem" },
+                        spacing: {
+                            "margin-desktop": "40px", "gutter": "24px", "unit": "8px",
+                            "margin-mobile": "16px", "md": "16px", "base": "4px",
+                            "xs": "8px", "xl": "32px", "lg": "24px", "sm": "12px"
+                        },
+                        fontFamily: {
+                            "label-md": ["Public Sans"], "body-md": ["Public Sans"],
+                            "headline-md": ["Public Sans"], "headline-lg": ["Public Sans"],
+                            "display-lg": ["Public Sans"]
+                        }
+                    }
+                }
+            }
+        </script>
+    </th:block>
+</head>
+<body>
+
+    <aside th:fragment="sidebar(activePage)"
+           class="hidden md:flex flex-col h-screen w-64 bg-surface-bright border-r border-outline-variant fixed left-0 top-0 py-xl z-50">
+        <div class="px-lg mb-xl">
+            <h2 class="font-headline-md text-2xl font-extrabold text-primary leading-none" th:text="#{app.title}">ZenConsulta</h2>
+            <p class="text-xs text-secondary uppercase tracking-widest mt-1" th:text="#{app.subtitle}">Portal do Paciente</p>
+        </div>
+        <nav class="flex-1 space-y-1">
+            <a th:href="@{/painel}"
+               th:classappend="${activePage == 'painel'} ? 'text-primary bg-secondary-container font-bold border-r-4 border-primary' : 'text-secondary hover:bg-surface-container-high'"
+               class="flex items-center gap-3 px-lg py-sm transition-all">
+                <span class="material-symbols-outlined">dashboard</span>
+                <span class="text-sm font-semibold" th:text="#{nav.painel}">Painel</span>
+            </a>
+            <a th:href="@{/buscar-medico}"
+               th:classappend="${activePage == 'buscar-medico'} ? 'text-primary bg-secondary-container font-bold border-r-4 border-primary' : 'text-secondary hover:bg-surface-container-high'"
+               class="flex items-center gap-3 px-lg py-sm transition-all">
+                <span class="material-symbols-outlined">person_search</span>
+                <span class="text-sm font-semibold" th:text="#{nav.buscarMedico}">Encontrar um Médico</span>
+            </a>
+            <a th:href="@{/consultas}"
+               th:classappend="${activePage == 'consultas'} ? 'text-primary bg-secondary-container font-bold border-r-4 border-primary' : 'text-secondary hover:bg-surface-container-high'"
+               class="flex items-center gap-3 px-lg py-sm transition-all">
+                <span class="material-symbols-outlined">calendar_today</span>
+                <span class="text-sm font-semibold" th:text="#{nav.consultas}">Minhas Consultas</span>
+            </a>
+            <a th:href="@{/prontuarios}"
+               th:classappend="${activePage == 'prontuarios'} ? 'text-primary bg-secondary-container font-bold border-r-4 border-primary' : 'text-secondary hover:bg-surface-container-high'"
+               class="flex items-center gap-3 px-lg py-sm transition-all">
+                <span class="material-symbols-outlined">description</span>
+                <span class="text-sm font-semibold" th:text="#{nav.prontuarios}">Prontuários Médicos</span>
+            </a>
+            <a th:href="@{/configuracoes}"
+               th:classappend="${activePage == 'configuracoes'} ? 'text-primary bg-secondary-container font-bold border-r-4 border-primary' : 'text-secondary hover:bg-surface-container-high'"
+               class="mt-auto flex items-center gap-3 px-lg py-sm border-t border-outline-variant pt-4 transition-all">
+                <span class="material-symbols-outlined">settings</span>
+                <span class="text-sm font-semibold" th:text="#{nav.configuracoes}">Configurações</span>
+            </a>
+        </nav>
+    </aside>
+
+    <header th:fragment="topbar(titulo)"
+            class="fixed top-0 left-0 md:left-64 right-0 z-40 h-16 flex items-center justify-between px-gutter bg-surface border-b border-outline-variant">
+        <h2 class="font-headline-md text-xl font-bold text-primary" th:text="${titulo}">Título</h2>
+        <div class="flex items-center gap-4">
+            <span class="material-symbols-outlined text-secondary cursor-pointer">notifications</span>
+            <div class="h-8 w-8 rounded-full bg-surface-container-high border border-outline-variant"></div>
+        </div>
+    </header>
+
+    <nav th:fragment="adminNav(ativo)"
+         class="w-full bg-surface border-b border-outline-variant px-margin-desktop py-3 flex flex-wrap gap-4 items-center sticky top-0 z-40">
+        <span class="font-bold text-primary mr-2" th:text="#{app.title} + ' · Administração'">ZenConsulta · Administração</span>
+        <a th:href="@{/pacientes}" th:classappend="${ativo == 'pacientes'} ? 'text-primary font-bold' : 'text-secondary'" class="text-sm hover:text-primary">Pacientes</a>
+        <a th:href="@{/profissionais}" th:classappend="${ativo == 'profissionais'} ? 'text-primary font-bold' : 'text-secondary'" class="text-sm hover:text-primary">Profissionais</a>
+        <a th:href="@{/operadores}" th:classappend="${ativo == 'operadores'} ? 'text-primary font-bold' : 'text-secondary'" class="text-sm hover:text-primary">Operadores</a>
+        <a th:href="@{/administradores}" th:classappend="${ativo == 'administradores'} ? 'text-primary font-bold' : 'text-secondary'" class="text-sm hover:text-primary">Administradores</a>
+        <a th:href="@{/slots}" th:classappend="${ativo == 'slots'} ? 'text-primary font-bold' : 'text-secondary'" class="text-sm hover:text-primary">Horários (Slots)</a>
+        <a th:href="@{/agendamentos}" th:classappend="${ativo == 'agendamentos'} ? 'text-primary font-bold' : 'text-secondary'" class="text-sm hover:text-primary">Agendamentos</a>
+        <a th:href="@{/painel}" class="text-sm text-secondary hover:text-primary ml-auto">&larr; Voltar ao Portal do Paciente</a>
+    </nav>
+
+    <div th:fragment="mensagens" class="px-margin-desktop mt-4">
+        <div th:if="${sucesso}" class="bg-primary-container text-on-primary-container px-4 py-2 rounded-lg mb-4" th:text="${sucesso}">Sucesso</div>
+        <div th:if="${erro}" class="bg-error text-white px-4 py-2 rounded-lg mb-4" th:text="${erro}">Erro</div>
+    </div>
+
+    <footer th:fragment="footer"
+            class="w-full flex flex-col md:flex-row justify-between items-center px-margin-desktop py-lg bg-surface-container-lowest border-t border-outline-variant mt-xl">
+        <p class="text-xs text-on-surface-variant" th:text="#{footer.direitos}">© 2024 ZenConsulta</p>
+        <div class="flex gap-lg mt-2 md:mt-0">
+            <a href="#" class="text-xs text-on-surface-variant hover:text-primary" th:text="#{footer.privacidade}">Privacidade</a>
+            <a href="#" class="text-xs text-on-surface-variant hover:text-primary" th:text="#{footer.termos}">Termos</a>
+            <a href="#" class="text-xs text-on-surface-variant hover:text-primary" th:text="#{footer.ajuda}">Ajuda</a>
+            <a href="#" class="text-xs text-on-surface-variant hover:text-primary" th:text="#{footer.contato}">Contato</a>
+        </div>
+    </footer>
+
+</body>
+</html>
